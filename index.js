@@ -1,51 +1,42 @@
-const express = require('express')
-const app = express()
-
-
-let todos = ["html","css"]
-let loggedIn = false;
+const express = require("express");
+const app = express();
+const {checkAuthentication,checkValidRole}= require('./middleware/auth');
+/* object destructing */
+let todos = ["html", "css"];
 
 /* middleware
-    -simply a function which has access to req and res
+    -simply a function which has access to req and res and can modify them
 */
 //function normal nai ho but access req and res pako le middleaware bak0
-function checkAuthentication(req,res,next){
-    if(!loggedIn){
-        return res.status(401).send()
-    }
-    console.log("checkAuthentication ");
-    next();
-    
+//next: points to the next upcomming valid middleware
+
+  
+// app.use(checkAuthentication); //global middleware
+// app.use(checkValidRole); //global middleware
+
+const createTodos = (req,res) =>{
+    todos.push("git");
+    return res.send("todos created");
 
 }
-app.use(checkAuthentication) //global middleware
+app.get("/api/todos", (req, res) => {
+  console.log("response list of todos");
+  res.send(todos);
+});
 
-
-app.get("/api/todos",(req,res) =>{
-    console.log("response list of todos");
-    res.send(todos)
-    
-
-})
-
-app.post("/api/todos",(req,res) =>{
-    
-        // console.log("response  created todos"); //test garni and colsole hatauni clean code banauna
-        todos.push("git")
-         return res.send("todos created")
-    
+// auth_middlware object vakole auth_middleware.checkauth gareko 
+// or object destructing gareo le yesto nagrda ni hunxa
+app.post("/api/todos",checkAuthentication,checkValidRole,createTodos, (req, res) => {
+  // console.log("response  created todos"); //test garni and colsole hatauni clean code banauna 
   
-    
+  return res.send("todos created");
+});
+app.delete("/api/todos/reset",checkAuthentication,checkValidRole, (req, res) => {
+  // console.log("response  created todos"); //test garni and colsole hatauni clean code banauna
+  todos = [];
+  return res.status(204).send();
+});
 
-})
-app.delete("/api/todos/reset",(req,res) =>{
-    
-        // console.log("response  created todos"); //test garni and colsole hatauni clean code banauna
-        todos = [];
-         return res.status(204).send(); 
-})
-
-app.listen(8000,() =>{
-    console.log("server started..");
-    
-})
+app.listen(8000, () => {
+  console.log("server started..");
+});

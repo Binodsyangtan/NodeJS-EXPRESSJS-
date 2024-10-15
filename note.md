@@ -14,7 +14,7 @@ oct-10(feb-13)
 
     -EXPRESS INSTALL AAJA 
 
-oct-13(eb-15)
+oct-13(feb-15)
     .status code
         2. 200,201,202,203,204  -> success
         3. -> redirect
@@ -25,3 +25,20 @@ oct-13(eb-15)
 
     -MIDDLEWARE 
         -simply a function which has access to req and res
+        -global middleware
+
+oct-15(feb-16)
+
+    -route level middleware 
+        -global middleware nabanai direct kun kun lai chaheko xa post or delete route lai middleware chaheko xa vane direct route mai halne jun jun ma middleware haleko xa tesley matra magxa middleware ko logic bakile magdaina
+        app.delete("/api/todos/reset",checkAuthentication,checkValidRole, (req, res) => {
+  // console.log("response  created todos"); //test garni and colsole hatauni clean code banauna
+  todos = [];
+  return res.status(204).send();
+});
+
+    ->delete ma rakhya xa so delete matra check garnxa middleware ko logic
+
+
+
+    
