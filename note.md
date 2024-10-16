@@ -38,7 +38,4 @@ oct-15(feb-16)
 });
 
     ->delete ma rakhya xa so delete matra check garnxa middleware ko logic
-
-
-
-    
+    -> app.use(express.json())  // sets up req.body // () =>{return(req,res,next) =>{}}

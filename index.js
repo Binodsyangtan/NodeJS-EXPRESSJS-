@@ -13,9 +13,10 @@ let todos = ["html", "css"];
   
 // app.use(checkAuthentication); //global middleware
 // app.use(checkValidRole); //global middleware
+app.use(express.json())  // sets up req.body // () =>{return(req,res,next) =>{}}
 
 const createTodos = (req,res) =>{
-    todos.push("git");
+    todos.push(req.body.title);
     return res.send("todos created");
 
 }
