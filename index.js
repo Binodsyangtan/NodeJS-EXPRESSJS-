@@ -16,6 +16,32 @@ let todos = ["html", "css"];
 app.use(express.json())  // sets up req.body // () =>{return(req,res,next) =>{}}
 
 const createTodos = (req,res) =>{
+    let inputTitle = req.body.title?.trim();
+    if(!inputTitle){
+        return res.status(400).send({
+            errors:[
+            { 
+                key: "title",
+                msg:"this field is required."
+            }
+            ]
+        })
+    }
+
+    // let matched = todos.find(el => el == inputTitle) // html
+    let matched = todos.some(el => el == inputTitle) //true
+    if(matched){
+        return res.status(400).send(
+            {
+                errors: [{
+                    key: "title",
+                    msg: "title already exists"
+                }]
+            }
+        )
+    }
+
+    /* input validation */
     todos.push(req.body.title);
     return res.send("todos created");
 
